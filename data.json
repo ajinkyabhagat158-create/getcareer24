@@ -1,0 +1,142 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Web Development Internship",
+      "description": "We are looking for a motivated web development intern to join our team. You'll work on real projects and gain valuable experience in front-end and back-end technologies including HTML, CSS, JavaScript, Python, and Flask framework. This is a great opportunity for students to enhance their skills and build a strong portfolio.",
+      "category": "internship",
+      "company": "Tech Solutions Inc.",
+      "location": "Remote",
+      "date": "2024-01-15 10:30:00",
+      "apply_link": "https://example.com/apply-internship",
+      "last_date": "2024-02-15",
+      "eligibility": "Students pursuing B.Tech/B.E in Computer Science or related fields. Basic knowledge of web technologies required. Strong problem-solving skills and ability to work in a team environment."
+    },
+    {
+      "id": 2,
+      "title": "Senior Software Engineer",
+      "description": "Join our engineering team to build scalable applications that serve millions of users. You'll work with modern technologies including React, Node.js, Python, and cloud platforms. We offer competitive salary, flexible working hours, and excellent growth opportunities in a dynamic startup environment.",
+      "category": "job",
+      "company": "Innovation Labs",
+      "location": "New York, NY",
+      "date": "2024-01-14 14:20:00",
+      "apply_link": "https://example.com/apply-job",
+      "last_date": "2024-01-30",
+      "eligibility": "B.Tech/B.E/M.Tech/M.E with 3+ years of experience in software development. Proficiency in JavaScript, React, Node.js, and database technologies. Experience with cloud platforms (AWS/Azure/GCP) is preferred."
+    },
+    {
+      "id": 3,
+      "title": "Campus Recruitment Drive 2024",
+      "description": "Annual campus recruitment drive will be conducted on January 25th, 2024. Top companies from IT, Core Engineering, and Management sectors will participate. All final year students are required to attend with their resumes, academic documents, and project details. Dress code: Formal attire.",
+      "category": "notice",
+      "company": "University Placement Cell",
+      "location": "Main Campus Auditorium",
+      "date": "2024-01-10 09:15:00",
+      "important_dates": [
+        {"event": "Registration Deadline", "date": "January 20, 2024"},
+        {"event": "Pre-placement Talk", "date": "January 23, 2024"},
+        {"event": "Recruitment Drive", "date": "January 25, 2024"}
+      ]
+    },
+    {
+      "id": 4,
+      "title": "GATE 2024 Examination",
+      "description": "Graduate Aptitude Test in Engineering (GATE) 2024 notification released. The examination will be conducted by IIT Bombay for admission to M.Tech programs in IITs, NITs, and other prestigious institutions. The exam will be held in multiple sessions across various cities in India.",
+      "category": "exam",
+      "company": "IIT Bombay",
+      "location": "Various Centers Across India",
+      "date": "2024-01-08 11:00:00",
+      "exam_date": "February 3, 4, 10, 11, 2024",
+      "apply_link": "https://gate2024.iitb.ac.in",
+      "notification_link": "https://gate2024.iitb.ac.in/notification.pdf",
+      "syllabus_link": "https://gate2024.iitb.ac.in/syllabus.pdf",
+      "last_date": "2024-09-30",
+      "important_dates": [
+        {"event": "Application Start", "date": "August 30, 2023"},
+        {"event": "Application End", "date": "September 29, 2023"},
+        {"event": "Admit Card Release", "date": "January 3, 2024"},
+        {"event": "Exam Date", "date": "February 3,4,10,11, 2024"},
+        {"event": "Result Declaration", "date": "March 16, 2024"}
+      ],
+      "eligibility": "Bachelor's degree in Engineering/Technology or Master's degree in relevant science subjects. There is no age limit for appearing in GATE 2024."
+    },
+    {
+      "id": 5,
+      "title": "CAT 2024 MBA Entrance Exam",
+      "description": "Common Admission Test (CAT) 2024 for admission to MBA programs in IIMs and other top B-schools across India. The exam tests quantitative ability, verbal ability, data interpretation, and logical reasoning. High scores can lead to admissions in premier management institutes.",
+      "category": "exam",
+      "company": "IIM Lucknow",
+      "location": "Across India",
+      "date": "2024-01-05 16:45:00",
+      "exam_date": "November 24, 2024",
+      "apply_link": "https://iimcat.ac.in",
+      "notification_link": "https://iimcat.ac.in/notification.pdf",
+      "syllabus_link": "https://iimcat.ac.in/syllabus.pdf",
+      "last_date": "September 15, 2024",
+      "important_dates": [
+        {"event": "Registration Start", "date": "August 1, 2024"},
+        {"event": "Registration End", "date": "September 15, 2024"},
+        {"event": "Admit Card", "date": "October 25, 2024"},
+        {"event": "Exam Date", "date": "November 24, 2024"},
+        {"event": "Result", "date": "January 5, 2025"}
+      ],
+      "eligibility": "Bachelor's degree with minimum 50% marks (45% for SC/ST/PWD candidates). Final year students can also apply. There is no age restriction for CAT exam."
+    },
+    {
+      "id": 6,
+      "title": "Data Science Internship Program",
+      "description": "Hands-on data science internship focusing on machine learning, data analysis, and visualization. Work on real-world projects under expert guidance. Perfect for students interested in AI and data analytics careers.",
+      "category": "internship",
+      "company": "Data Analytics Corp",
+      "location": "Bangalore/Hybrid",
+      "date": "2024-01-18 14:20:00",
+      "apply_link": "https://example.com/data-science-internship",
+      "last_date": "2024-02-10",
+      "eligibility": "Students from Computer Science, Statistics, Mathematics backgrounds. Basic knowledge of Python, SQL, and statistics required."
+    },
+    {
+      "id": 7,
+      "title": "UPSC Civil Services Examination 2024",
+      "description": "Union Public Service Commission Civil Services Examination 2024 notification. One of the most prestigious examinations in India for recruitment to various civil services like IAS, IPS, IFS, etc.",
+      "category": "exam",
+      "company": "UPSC",
+      "location": "All India",
+      "date": "2024-01-12 10:00:00",
+      "exam_date": "May 26, 2024 (Prelims)",
+      "apply_link": "https://upsc.gov.in",
+      "notification_link": "https://upsc.gov.in/notification.pdf",
+      "syllabus_link": "https://upsc.gov.in/syllabus.pdf",
+      "last_date": "2024-02-20",
+      "important_dates": [
+        {"event": "Notification Release", "date": "January 10, 2024"},
+        {"event": "Application Start", "date": "January 15, 2024"},
+        {"event": "Application End", "date": "February 20, 2024"},
+        {"event": "Prelims Exam", "date": "May 26, 2024"},
+        {"event": "Mains Exam", "date": "September 15, 2024"}
+      ],
+      "eligibility": "Bachelor's degree in any discipline from recognized university. Age limit: 21-32 years (relaxation for reserved categories)."
+    },
+    {
+      "id": 8,
+      "title": "MPSE Civil Services Examination 2024",
+      "description": "Union Public Service Commission Civil Services Examination 2024 notification. One of the most prestigious examinations in India for recruitment to various civil services like IAS, IPS, IFS, etc.",
+      "category": "exam",
+      "company": "UPSC",
+      "location": "All India",
+      "date": "2024-01-12 10:00:00",
+      "exam_date": "May 26, 2024 (Prelims)",
+      "apply_link": "https://upsc.gov.in",
+      "notification_link": "https://upsc.gov.in/notification.pdf",
+      "syllabus_link": "https://upsc.gov.in/syllabus.pdf",
+      "last_date": "2024-02-20",
+      "important_dates": [
+        {"event": "Notification Release", "date": "January 10, 2024"},
+        {"event": "Application Start", "date": "January 15, 2024"},
+        {"event": "Application End", "date": "February 20, 2024"},
+        {"event": "Prelims Exam", "date": "May 26, 2024"},
+        {"event": "Mains Exam", "date": "September 15, 2024"}
+      ],
+      "eligibility": "Bachelor's degree in any discipline from recognized university. Age limit: 21-32 years (relaxation for reserved categories)."
+    }
+  ]
+}

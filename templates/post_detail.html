@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - GetCareer24{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="post-detail">
+        <div class="detail-header">
+            <div class="post-category {{ post.category }}">{{ post.category|title }}</div>
+            <h1>{{ post.title }}</h1>
+            <div class="post-meta">
+                {% if post.company %}
+                <span class="meta-item"><i class="fas fa-building"></i> {{ post.company }}</span>
+                {% endif %}
+                {% if post.location %}
+                <span class="meta-item"><i class="fas fa-map-marker-alt"></i> {{ post.location }}</span>
+                {% endif %}
+                <span class="meta-item"><i class="fas fa-calendar"></i> Posted: {{ post.date }}</span>
+                {% if post.exam_date %}
+                <span class="meta-item exam-highlight"><i class="fas fa-calendar-day"></i> Exam Date: {{ post.exam_date }}</span>
+                {% endif %}
+                {% if post.last_date %}
+                <span class="meta-item deadline"><i class="fas fa-clock"></i> Apply by: {{ post.last_date }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="detail-content">
+            <div class="description-section">
+                <h3>Description</h3>
+                <p>{{ post.description }}</p>
+            </div>
+
+            {% if post.eligibility %}
+            <div class="eligibility-section">
+                <h3>Eligibility Criteria</h3>
+                <p>{{ post.eligibility }}</p>
+            </div>
+            {% endif %}
+
+            {% if post.important_dates %}
+            <div class="dates-section">
+                <h3>Important Dates</h3>
+                <div class="dates-list">
+                    {% for date_item in post.important_dates %}
+                    <div class="date-item">
+                        <strong>{{ date_item.event }}:</strong> {{ date_item.date }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="action-buttons">
+                {% if post.apply_link %}
+                <a href="{{ post.apply_link }}" target="_blank" class="btn btn-primary btn-large">
+                    <i class="fas fa-external-link-alt"></i> Apply Now / Official Website
+                </a>
+                {% endif %}
+
+                {% if post.notification_link %}
+                <a href="{{ post.notification_link }}" target="_blank" class="btn btn-secondary">
+                    <i class="fas fa-file-download"></i> Download Notification
+                </a>
+                {% endif %}
+
+                {% if post.syllabus_link %}
+                <a href="{{ post.syllabus_link }}" target="_blank" class="btn btn-exam">
+                    <i class="fas fa-book"></i> Syllabus & Pattern
+                </a>
+                {% endif %}
+
+                <a href="{{ url_for('category_posts', category_type=post.category) }}" class="btn btn-tertiary">
+                    <i class="fas fa-arrow-left"></i> Back to {{ post.category|title }}s
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

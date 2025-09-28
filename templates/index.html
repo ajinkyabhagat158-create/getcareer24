@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <h1>Welcome to GetCareer24</h1>
+        <p>Find the best internships, jobs, exams, and important notices in one place</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('category_posts', category_type='internship') }}" class="btn btn-primary">
+                Browse Internships
+            </a>
+            <a href="{{ url_for('category_posts', category_type='job') }}" class="btn btn-secondary">
+                Browse Jobs
+            </a>
+            <a href="{{ url_for('category_posts', category_type='exam') }}" class="btn btn-exam">
+                Exam Dates
+            </a>
+            <a href="{{ url_for('category_posts', category_type='notice') }}" class="btn btn-tertiary">
+                View Notices
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section">
+        <h2>Recent Opportunities</h2>
+        <div class="posts-grid">
+            {% for post in posts[:8] %}
+            <a href="{{ url_for('post_detail', post_id=post.id) }}" class="post-card-link">
+                <div class="post-card">
+                    <div class="post-category {{ post.category }}">{{ post.category|title }}</div>
+                    <h3>{{ post.title }}</h3>
+                    <p class="post-description">{{ post.description[:150] }}{% if post.description|length > 150 %}...{% endif %}</p>
+                    {% if post.company %}
+                    <p class="post-company"><i class="fas fa-building"></i> {{ post.company }}</p>
+                    {% endif %}
+                    {% if post.location %}
+                    <p class="post-location"><i class="fas fa-map-marker-alt"></i> {{ post.location }}</p>
+                    {% endif %}
+                    <div class="post-footer">
+                        <span class="post-date">{{ post.date }}</span>
+                        {% if post.exam_date %}
+                        <span class="exam-date"><i class="fas fa-calendar-day"></i> {{ post.exam_date }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% else %}
+            <div class="no-posts">
+                <i class="fas fa-inbox"></i>
+                <h3>No opportunities available at the moment</h3>
+                <p>Please check back later for new postings.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if posts|length > 8 %}
+        <div class="view-all">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">View All Opportunities</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
