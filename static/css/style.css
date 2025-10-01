@@ -61,9 +61,6 @@ body {
 /* Hero Section */
 .hero {
     background: linear-gradient(135deg, #3f3fbf 0%, #6a4da0 50%, #8b65c1 100%);
-
-
-
     color: white;
     padding: 6.5rem 0;
     text-align: center;
@@ -284,6 +281,7 @@ body {
     margin-bottom: 1.5rem;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
+    position: relative; /* Needed for absolute positioning of share button */
 }
 
 .post-item-link {
@@ -425,6 +423,154 @@ body {
     gap: 0.5rem;
 }
 
+/* Share Functionality Styles */
+.post-content {
+    padding-right: 50px; /* Create space for share button */
+}
+
+.post-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.share-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Share button for posts list */
+.post-item .share-dropdown {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+/* Share button for post detail */
+.post-detail .share-dropdown {
+    position: relative;
+}
+
+.share-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.post-detail .share-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.share-btn:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: scale(1.1);
+}
+
+.post-detail .share-btn:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.share-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    min-width: 180px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 8px 0;
+    margin-top: 5px;
+}
+
+.post-detail .share-dropdown-content {
+    min-width: 200px;
+}
+
+.share-dropdown-content button,
+.share-dropdown-content a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.share-dropdown-content button:hover,
+.share-dropdown-content a:hover {
+    background: #f8f9fa;
+}
+
+.share-dropdown-content i {
+    width: 16px;
+    text-align: center;
+    color: #666;
+}
+
+.show-dropdown {
+    display: block !important;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Platform-specific hover colors */
+.share-dropdown-content a[href*="whatsapp"]:hover i {
+    color: #25D366;
+}
+
+.share-dropdown-content a[href*="twitter"]:hover i {
+    color: #1DA1F2;
+}
+
+.share-dropdown-content a[href*="facebook"]:hover i {
+    color: #4267B2;
+}
+
+.share-dropdown-content a[href*="linkedin"]:hover i {
+    color: #0077B5;
+}
+
+.share-dropdown-content a[href*="telegram"]:hover i {
+    color: #0088cc;
+}
+
 /* No Posts */
 .no-posts {
     text-align: center;
@@ -514,6 +660,28 @@ body {
         align-items: flex-start;
         gap: 0.3rem;
     }
+
+    /* Share responsive */
+    .post-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .post-detail .share-dropdown {
+        align-self: flex-start;
+    }
+
+    .post-content {
+        padding-right: 0;
+    }
+
+    .post-item .share-dropdown {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-top: 15px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -531,5 +699,14 @@ body {
 
     .hero-content h1 {
         font-size: 1.8rem;
+    }
+
+    .share-dropdown-content {
+        min-width: 160px;
+        right: -10px;
+    }
+
+    .post-detail .share-dropdown-content {
+        min-width: 180px;
     }
 }
