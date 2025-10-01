@@ -281,7 +281,7 @@ body {
     margin-bottom: 1.5rem;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
-    position: relative; /* Needed for absolute positioning of share button */
+    position: relative;
 }
 
 .post-item-link {
@@ -425,14 +425,15 @@ body {
 
 /* Share Functionality Styles */
 .post-content {
-    padding-right: 50px; /* Create space for share button */
+    padding-right: 50px;
 }
 
 .post-header-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;
+    gap: 15px;
 }
 
 .share-dropdown {
@@ -445,7 +446,7 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    z-index: 10;
+    z-index: 100;
 }
 
 /* Share button for post detail */
@@ -466,6 +467,7 @@ body {
     transition: all 0.3s ease;
     color: #6c757d;
     font-size: 14px;
+    z-index: 101;
 }
 
 .post-detail .share-btn {
@@ -494,6 +496,7 @@ body {
     transform: scale(1.05);
 }
 
+/* Desktop Share Dropdown */
 .share-dropdown-content {
     display: none;
     position: absolute;
@@ -545,12 +548,113 @@ body {
     animation: fadeIn 0.2s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Mobile Share Sheet */
+.share-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-/* Platform-specific hover colors */
+.share-backdrop.active {
+    display: block;
+    opacity: 1;
+}
+
+.share-sheet {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    z-index: 9999;
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.share-sheet.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+}
+
+.share-sheet-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.share-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.share-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.share-option:hover {
+    background: #f8f9fa;
+}
+
+.share-option i {
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+}
+
+.share-option span {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+}
+
+/* Platform colors */
+.share-option[data-platform="copy"] i { background: #6c757d; }
+.share-option[data-platform="whatsapp"] i { background: #25D366; }
+.share-option[data-platform="twitter"] i { background: #1DA1F2; }
+.share-option[data-platform="facebook"] i { background: #4267B2; }
+.share-option[data-platform="linkedin"] i { background: #0077B5; }
+.share-option[data-platform="telegram"] i { background: #0088cc; }
+.share-option[data-platform="email"] i { background: #ea4335; }
+
+/* Platform-specific hover colors for desktop */
 .share-dropdown-content a[href*="whatsapp"]:hover i {
     color: #25D366;
 }
@@ -569,6 +673,11 @@ body {
 
 .share-dropdown-content a[href*="telegram"]:hover i {
     color: #0088cc;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* No Posts */
@@ -681,6 +790,32 @@ body {
         top: auto;
         right: auto;
         margin-top: 15px;
+        align-self: flex-start;
+    }
+
+    /* Hide desktop dropdown on mobile */
+    .share-dropdown-content {
+        display: none !important;
+    }
+
+    /* Mobile share sheet adjustments */
+    .share-options {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .share-option {
+        padding: 12px 8px;
+    }
+
+    .share-option i {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .share-option span {
+        font-size: 11px;
     }
 }
 
@@ -701,12 +836,31 @@ body {
         font-size: 1.8rem;
     }
 
-    .share-dropdown-content {
-        min-width: 160px;
-        right: -10px;
+    .share-options {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
     }
 
-    .post-detail .share-dropdown-content {
-        min-width: 180px;
+    .share-option {
+        padding: 10px 5px;
     }
+
+    .share-option i {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .share-option span {
+        font-size: 10px;
+    }
+
+    .share-sheet {
+        padding: 15px;
+    }
+}
+
+/* Prevent body scroll when share sheet is open */
+body.no-scroll {
+    overflow: hidden;
 }
