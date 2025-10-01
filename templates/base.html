@@ -7,16 +7,252 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
         .nav-logo {
             display: flex;
             align-items: center;
-            height: 40px; /* Fixed height for nav-logo container */
+            height: 50px;
         }
+
         .logo-img {
             height: 300%;
             width: auto;
-            max-height: 100px; /* Same as container height */
+            max-height: 90px;
             object-fit: contain;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .nav-link span {
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .tab-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .tab-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .tab-header h1 {
+            font-size: 2.5rem;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .tab-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .card-header i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .card-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-body p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+        }
+
+        .footer {
+            background-color: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content p {
+            margin: 0;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 20px;
+            }
+
+            .nav-menu {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-link {
+                min-width: 100px;
+                padding: 10px 15px;
+            }
+
+            .tab-header h1 {
+                font-size: 2rem;
+            }
+
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-menu {
+                gap: 5px;
+            }
+
+            .nav-link {
+                min-width: 80px;
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+
+            .nav-link i {
+                font-size: 1rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -27,17 +263,96 @@
             <img src="https://i.ibb.co/kVGXV7jN/getcareer24logo.png" alt="getcareer24logo" class="logo-img">
         </a>
         <div class="nav-menu">
-            <a href="{{ url_for('index') }}" class="nav-link">Home</a>
-            <a href="{{ url_for('category_posts', category_type='internship') }}" class="nav-link">Internships</a>
-            <a href="{{ url_for('category_posts', category_type='job') }}" class="nav-link">Jobs</a>
-            <a href="{{ url_for('category_posts', category_type='exam') }}" class="nav-link">Exams</a>
-            <a href="{{ url_for('category_posts', category_type='notice') }}" class="nav-link">Notices</a>
+            <a href="{{ url_for('index') }}" class="nav-link active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="{{ url_for('category_posts', category_type='internship') }}" class="nav-link">
+                <i class="fas fa-briefcase"></i>
+                <span>Internships</span>
+            </a>
+            <a href="{{ url_for('category_posts', category_type='job') }}" class="nav-link">
+                <i class="fas fa-user-tie"></i>
+                <span>Jobs</span>
+            </a>
+            <a href="{{ url_for('category_posts', category_type='exam') }}" class="nav-link">
+                <i class="fas fa-file-alt"></i>
+                <span>Exams</span>
+            </a>
+            <a href="{{ url_for('category_posts', category_type='notice') }}" class="nav-link">
+                <i class="fas fa-bullhorn"></i>
+                <span>Notices</span>
+            </a>
         </div>
     </div>
 </nav>
 
 <main>
-    {% block content %}{% endblock %}
+    {% block content %}
+    <div class="tab-content">
+        <div class="tab-header">
+            <h1>Welcome to GetCareer24</h1>
+            <p>Your one-stop destination for career opportunities, internships, exams, and important notices.</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-home"></i>
+                    <h3>Home</h3>
+                </div>
+                <div class="card-body">
+                    <p>Welcome to GetCareer24! Explore various career opportunities, internships, exams, and notices all in one place.</p>
+                    <a href="{{ url_for('index') }}" class="btn">Explore Home</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Internships</h3>
+                </div>
+                <div class="card-body">
+                    <p>Find the perfect internship to kickstart your career. Browse through hundreds of opportunities from top companies.</p>
+                    <a href="{{ url_for('category_posts', category_type='internship') }}" class="btn">Browse Internships</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Jobs</h3>
+                </div>
+                <div class="card-body">
+                    <p>Discover your dream job from our extensive database of employment opportunities across various industries.</p>
+                    <a href="{{ url_for('category_posts', category_type='job') }}" class="btn">Find Jobs</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Exams</h3>
+                </div>
+                <div class="card-body">
+                    <p>Prepare for competitive exams with our comprehensive resources, schedules, and important notifications.</p>
+                    <a href="{{ url_for('category_posts', category_type='exam') }}" class="btn">View Exams</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>Notices</h3>
+                </div>
+                <div class="card-body">
+                    <p>Stay updated with the latest career-related notices, announcements, and important dates.</p>
+                    <a href="{{ url_for('category_posts', category_type='notice') }}" class="btn">Check Notices</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
 </main>
 
 <footer class="footer">
@@ -46,6 +361,37 @@
     </div>
 </footer>
 
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script>
+    // Add active class to current page nav link
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentLocation = window.location.href;
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            if(link.href === currentLocation) {
+                link.classList.add('active');
+            }
+        });
+
+        // Add animation to cards on scroll
+        const cards = document.querySelectorAll('.card');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    });
+</script>
 </body>
 </html>
