@@ -35,33 +35,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 40px;
+            height: 50px;
         }
 
         .nav-logo {
             display: flex;
             align-items: center;
-            height: 50px;
+            height: 100%;
         }
 
         .logo-img {
-            height: 300%;
+            height: 90px;
             width: auto;
-            max-height: 90px;
             object-fit: contain;
         }
 
         .nav-menu {
             display: flex;
-            gap: 0.1px;
+            gap: 5px;
         }
 
         .nav-link {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 12px 20px;
+            padding: 8px 15px;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -69,13 +66,13 @@
             font-weight: 500;
             position: relative;
             overflow: hidden;
-            min-width: 120px;
+            min-width: auto;
             text-align: center;
         }
 
         .nav-link i {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
+            font-size: 1rem;
+            margin-right: 8px;
         }
 
         .nav-link span {
@@ -207,23 +204,60 @@
             margin: 0;
         }
 
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .nav-container {
-                flex-direction: column;
-                height: auto;
-                padding: 15px 20px;
+                padding: 0 15px;
+                height: 50px;
+            }
+
+            .logo-img {
+                height: 30px;
+            }
+
+            .menu-toggle {
+                display: flex;
             }
 
             .nav-menu {
-                margin-top: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
+                position: fixed;
+                top: 50px;
+                left: -100%;
+                width: 100%;
+                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                transition: left 0.3s ease;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                z-index: 999;
+            }
+
+            .nav-menu.active {
+                left: 0;
             }
 
             .nav-link {
-                min-width: 100px;
-                padding: 10px 15px;
+                width: 90%;
+                margin: 5px 0;
+                padding: 12px 15px;
+                justify-content: flex-start;
             }
 
             .tab-header h1 {
@@ -232,26 +266,50 @@
 
             .cards-container {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+
+            .card {
+                margin-bottom: 10px;
             }
         }
 
         @media (max-width: 480px) {
+            .nav-container {
+                height: 45px;
+            }
+
+            .logo-img {
+                height: 25px;
+            }
+
             .nav-menu {
-                gap: 5px;
+                top: 45px;
             }
 
             .nav-link {
-                min-width: 80px;
-                padding: 8px 10px;
-                font-size: 0.85rem;
+                padding: 10px 15px;
             }
 
             .nav-link i {
-                font-size: 1rem;
+                font-size: 0.9rem;
+                margin-right: 10px;
+            }
+
+            .nav-link span {
+                font-size: 0.85rem;
             }
 
             .cards-container {
                 grid-template-columns: 1fr;
+            }
+
+            .tab-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tab-header p {
+                font-size: 1rem;
             }
         }
     </style>
@@ -262,7 +320,12 @@
         <a href="{{ url_for('index') }}" class="nav-logo">
             <img src="https://i.ibb.co/kVGXV7jN/getcareer24logo.png" alt="getcareer24logo" class="logo-img">
         </a>
-        <div class="nav-menu">
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
             <a href="{{ url_for('index') }}" class="nav-link">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
@@ -362,6 +425,15 @@
 </footer>
 
 <script>
+    // Mobile menu toggle
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navMenu = document.getElementById('nav-menu');
+
+    mobileMenu.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+    });
+
     // Add active class to current page nav link
     document.addEventListener('DOMContentLoaded', function() {
         const currentLocation = window.location.href;
