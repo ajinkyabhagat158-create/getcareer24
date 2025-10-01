@@ -33,28 +33,11 @@
                     </div>
                 </div>
             </a>
-            <!-- Share button positioned absolutely -->
+            <!-- Share button -->
             <div class="share-dropdown">
-                <button class="share-btn" onclick="toggleShareDropdown(this)">
+                <button class="share-btn" onclick="openShareSheet('{{ post.title }}', '{{ url_for('post_detail', post_id=post.id) }}')">
                     <i class="fas fa-share-alt"></i>
                 </button>
-                <div class="share-dropdown-content">
-                    <button onclick="copyPostLink('{{ url_for('post_detail', post_id=post.id) }}', this)">
-                        <i class="fas fa-link"></i> Copy Link
-                    </button>
-                    <a href="https://wa.me/?text=Check out this opportunity: {{ post.title }} - {{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank" onclick="event.stopPropagation()">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                    <a href="https://twitter.com/intent/tweet?text=Check out this opportunity: {{ post.title }}&url={{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank" onclick="event.stopPropagation()">
-                        <i class="fab fa-twitter"></i> Twitter
-                    </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank" onclick="event.stopPropagation()">
-                        <i class="fab fa-facebook"></i> Facebook
-                    </a>
-                    <a href="mailto:?subject=Check this opportunity: {{ post.title }}&body=Check out this opportunity: {{ post.title }} - {{ url_for('post_detail', post_id=post.id, _external=True) }}" onclick="event.stopPropagation()">
-                        <i class="fas fa-envelope"></i> Email
-                    </a>
-                </div>
             </div>
         </div>
         {% else %}
@@ -67,78 +50,135 @@
     </div>
 </div>
 
-
+<!-- Mobile Share Sheet -->
+<div class="share-backdrop" id="shareBackdrop" onclick="closeShareSheet()"></div>
+<div class="share-sheet" id="shareSheet">
+    <div class="sheet-handle"></div>
+    <div class="share-sheet-title">Share Opportunity</div>
+    <div class="share-options">
+        <button class="share-option" data-platform="copy" onclick="copyPostLink()">
+            <i class="fas fa-link"></i>
+            <span>Copy Link</span>
+        </button>
+        <button class="share-option" data-platform="whatsapp" onclick="shareOnPlatform('whatsapp')">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+        </button>
+        <button class="share-option" data-platform="twitter" onclick="shareOnPlatform('twitter')">
+            <i class="fab fa-twitter"></i>
+            <span>Twitter</span>
+        </button>
+        <button class="share-option" data-platform="facebook" onclick="shareOnPlatform('facebook')">
+            <i class="fab fa-facebook"></i>
+            <span>Facebook</span>
+        </button>
+        <button class="share-option" data-platform="linkedin" onclick="shareOnPlatform('linkedin')">
+            <i class="fab fa-linkedin"></i>
+            <span>LinkedIn</span>
+        </button>
+        <button class="share-option" data-platform="telegram" onclick="shareOnPlatform('telegram')">
+            <i class="fab fa-telegram"></i>
+            <span>Telegram</span>
+        </button>
+        <button class="share-option" data-platform="email" onclick="shareOnPlatform('email')">
+            <i class="fas fa-envelope"></i>
+            <span>Email</span>
+        </button>
+    </div>
+</div>
 
 <script>
-    function toggleShareDropdown(button) {
+    let currentShareData = {};
+
+    function openShareSheet(title, url) {
         event.preventDefault();
         event.stopPropagation();
 
-        const dropdown = button.nextElementSibling;
-        const allDropdowns = document.querySelectorAll('.share-dropdown-content');
+        currentShareData = {
+            title: title,
+            url: url,
+            fullUrl: window.location.origin + url
+        };
 
-        // Close all other dropdowns
-        allDropdowns.forEach(drop => {
-            if (drop !== dropdown) {
-                drop.classList.remove('show-dropdown');
-            }
-        });
-
-        // Toggle current dropdown
-        dropdown.classList.toggle('show-dropdown');
+        // Use mobile sheet for all devices for consistency
+        document.getElementById('shareBackdrop').classList.add('active');
+        document.getElementById('shareSheet').classList.add('active');
+        document.body.classList.add('no-scroll');
     }
 
-    function copyPostLink(url, button) {
-        event.preventDefault();
-        event.stopPropagation();
+    function closeShareSheet() {
+        document.getElementById('shareBackdrop').classList.remove('active');
+        document.getElementById('shareSheet').classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        currentShareData = {};
+    }
 
-        const fullUrl = window.location.origin + url;
-        navigator.clipboard.writeText(fullUrl).then(() => {
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                // Close dropdown after copy
-                const dropdown = button.closest('.share-dropdown-content');
-                if (dropdown) {
-                    dropdown.classList.remove('show-dropdown');
-                }
-            }, 1500);
+    function copyPostLink() {
+        if (!currentShareData.fullUrl) return;
+
+        navigator.clipboard.writeText(currentShareData.fullUrl).then(() => {
+            showCopyFeedback();
         }).catch(err => {
-            console.error('Failed to copy: ', err);
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
-            textArea.value = fullUrl;
+            textArea.value = currentShareData.fullUrl;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            setTimeout(() => {
-                button.innerHTML = originalText;
-            }, 1500);
+            showCopyFeedback();
         });
     }
 
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-        // Check if click is outside any share dropdown
-        if (!event.target.closest('.share-dropdown')) {
-            document.querySelectorAll('.share-dropdown-content').forEach(dropdown => {
-                dropdown.classList.remove('show-dropdown');
-            });
+    function showCopyFeedback() {
+        const copyBtn = document.querySelector('[data-platform="copy"]');
+        const originalHTML = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+        copyBtn.style.background = '#e8f5e8';
+
+        setTimeout(() => {
+            copyBtn.innerHTML = originalHTML;
+            copyBtn.style.background = '';
+            closeShareSheet();
+        }, 1500);
+    }
+
+    function shareOnPlatform(platform) {
+        if (!currentShareData.fullUrl) return;
+
+        const encodedTitle = encodeURIComponent('Check out this opportunity: ' + currentShareData.title);
+        const encodedUrl = encodeURIComponent(currentShareData.fullUrl);
+
+        const shareUrls = {
+            whatsapp: `https://wa.me/?text=${encodedTitle} - ${encodedUrl}`,
+            twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+            linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+            telegram: `https://telegram.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+            email: `mailto:?subject=${encodedTitle}&body=${encodedTitle} - ${encodedUrl}`
+        };
+
+        if (platform === 'email') {
+            window.location.href = shareUrls[platform];
+        } else {
+            window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+        }
+
+        closeShareSheet();
+    }
+
+    // Close share sheet when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeShareSheet();
         }
     });
 
-    // Close dropdown when pressing Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            document.querySelectorAll('.share-dropdown-content').forEach(dropdown => {
-                dropdown.classList.remove('show-dropdown');
-            });
-        }
+    // Close share sheet when clicking on a share option (prevents immediate closure)
+    document.querySelectorAll('.share-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
     });
 </script>
 {% endblock %}
