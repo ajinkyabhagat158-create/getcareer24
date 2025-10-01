@@ -6,7 +6,37 @@
 <div class="container">
     <div class="post-detail">
         <div class="detail-header">
-            <div class="post-category {{ post.category }}">{{ post.category|title }}</div>
+            <div class="post-header-top">
+                <div class="post-category {{ post.category }}">{{ post.category|title }}</div>
+                <div class="share-dropdown">
+                    <button class="share-btn" onclick="toggleShareDropdown(this)">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <div class="share-dropdown-content">
+                        <button onclick="copyPostLink('{{ url_for('post_detail', post_id=post.id) }}', this)">
+                            <i class="fas fa-link"></i> Copy Link
+                        </button>
+                        <a href="https://wa.me/?text=Check out this opportunity: {{ post.title|urlencode }} - {{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text={{ ('Check out this opportunity: ' + post.title)|urlencode }}&url={{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url_for('post_detail', post_id=post.id, _external=True) }}" target="_blank">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="mailto:?subject={{ ('Check this opportunity: ' + post.title)|urlencode }}&body={{ ('Check out this opportunity: ' + post.title + ' - ' + url_for('post_detail', post_id=post.id, _external=True))|urlencode }}">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="https://telegram.me/share/url?url={{ url_for('post_detail', post_id=post.id, _external=True) }}&text={{ ('Check out this opportunity: ' + post.title)|urlencode }}" target="_blank">
+                            <i class="fab fa-telegram"></i> Telegram
+                        </a>
+                    </div>
+                </div>
+            </div>
             <h1>{{ post.title }}</h1>
             <div class="post-meta">
                 {% if post.company %}
@@ -77,4 +107,55 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    function toggleShareDropdown(button) {
+        event.stopPropagation();
+        const dropdown = button.nextElementSibling;
+        const allDropdowns = document.querySelectorAll('.share-dropdown-content');
+
+        // Close all other dropdowns
+        allDropdowns.forEach(drop => {
+            if (drop !== dropdown) {
+                drop.classList.remove('show-dropdown');
+            }
+        });
+
+        // Toggle current dropdown
+        dropdown.classList.toggle('show-dropdown');
+    }
+
+    function copyPostLink(url, button) {
+        const fullUrl = window.location.origin + url;
+        navigator.clipboard.writeText(fullUrl).then(() => {
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                // Close dropdown after copy
+                button.closest('.share-dropdown-content').classList.remove('show-dropdown');
+            }, 1500);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.share-dropdown-content').forEach(dropdown => {
+            dropdown.classList.remove('show-dropdown');
+        });
+    });
+
+    // Close dropdown when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            document.querySelectorAll('.share-dropdown-content').forEach(dropdown => {
+                dropdown.classList.remove('show-dropdown');
+            });
+        }
+    });
+</script>
 {% endblock %}
