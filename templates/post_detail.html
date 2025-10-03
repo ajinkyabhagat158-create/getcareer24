@@ -33,31 +33,157 @@
         </div>
 
         <div class="detail-content">
+            <!-- Job Description Section -->
             <div class="description-section">
-                <h3>Description</h3>
-                <p>{{ post.description }}</p>
+                <h3><i class="fas fa-file-alt"></i>Description</h3>
+                <div class="section-content">
+                    {% if post.description %}
+                    <p>{{ post.description }}</p>
+                    {% else %}
+                    <p class="no-info">No description provided.</p>
+                    {% endif %}
+                </div>
             </div>
 
-            {% if post.eligibility %}
-            <div class="eligibility-section">
-                <h3>Eligibility Criteria</h3>
-                <p>{{ post.eligibility }}</p>
-            </div>
-            {% endif %}
-
-            {% if post.important_dates %}
-            <div class="dates-section">
-                <h3>Important Dates</h3>
-                <div class="dates-list">
-                    {% for date_item in post.important_dates %}
-                    <div class="date-item">
-                        <strong>{{ date_item.event }}:</strong> {{ date_item.date }}
-                    </div>
-                    {% endfor %}
+            <!-- Responsibilities Section (for jobs/internships) -->
+            {% if post.category in ['job', 'internship'] and post.responsibilities %}
+            <div class="responsibilities-section">
+                <h3><i class="fas fa-tasks"></i> Key Responsibilities</h3>
+                <div class="section-content">
+                    <ul>
+                        {% for responsibility in post.responsibilities %}
+                        <li>{{ responsibility }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             {% endif %}
 
+            <!-- Skills Required Section (for jobs/internships) -->
+            {% if post.category in ['job', 'internship'] and post.skills_required %}
+            <div class="skills-section">
+                <h3><i class="fas fa-cogs"></i> Skills Required</h3>
+                <div class="section-content">
+                    <div class="skills-list">
+                        {% for skill in post.skills_required %}
+                        <span class="skill-tag">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- About Company Section (for jobs/internships) -->
+            {% if post.category in ['job', 'internship'] and post.about_company %}
+            <div class="company-section">
+                <h3><i class="fas fa-info-circle"></i> About {{ post.company }}</h3>
+                <div class="section-content">
+                    <p>{{ post.about_company }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Eligibility Criteria Section -->
+            {% if post.eligibility %}
+            <div class="eligibility-section">
+                <h3><i class="fas fa-user-check"></i> Eligibility Criteria</h3>
+                <div class="section-content">
+                    <p>{{ post.eligibility }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Selection Process Section (for jobs/exams) -->
+            {% if post.selection_process %}
+            <div class="selection-section">
+                <h3><i class="fas fa-sitemap"></i> Selection Process</h3>
+                <div class="section-content">
+                    {% if post.selection_process is string %}
+                    <p>{{ post.selection_process }}</p>
+                    {% else %}
+                    <ol>
+                        {% for step in post.selection_process %}
+                        <li>{{ step }}</li>
+                        {% endfor %}
+                    </ol>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Salary/Stipend Section (for jobs/internships) -->
+            {% if post.category in ['job', 'internship'] and post.salary %}
+            <div class="salary-section">
+                <h3><i class="fas fa-money-bill-wave"></i> {{ 'Salary' if post.category == 'job' else 'Stipend' }}</h3>
+                <div class="section-content">
+                    <p>{{ post.salary }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Exam Pattern Section (for exams) -->
+            {% if post.category == 'exam' and post.exam_pattern %}
+            <div class="pattern-section">
+                <h3><i class="fas fa-clipboard-list"></i> Exam Pattern</h3>
+                <div class="section-content">
+                    {% if post.exam_pattern is string %}
+                    <p>{{ post.exam_pattern }}</p>
+                    {% else %}
+                    <div class="pattern-table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Questions</th>
+                                <th>Marks</th>
+                                <th>Duration</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for section in post.exam_pattern %}
+                            <tr>
+                                <td>{{ section.name }}</td>
+                                <td>{{ section.questions }}</td>
+                                <td>{{ section.marks }}</td>
+                                <td>{{ section.duration }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Important Dates Section -->
+            {% if post.important_dates %}
+            <div class="dates-section">
+                <h3><i class="fas fa-calendar-alt"></i> Important Dates</h3>
+                <div class="section-content">
+                    <div class="dates-list">
+                        {% for date_item in post.important_dates %}
+                        <div class="date-item">
+                            <div class="date-event">{{ date_item.event }}</div>
+                            <div class="date-value">{{ date_item.date }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Notice Details Section (for notices) -->
+            {% if post.category == 'notice' and post.notice_details %}
+            <div class="notice-section">
+                <h3><i class="fas fa-bullhorn"></i> Notice Details</h3>
+                <div class="section-content">
+                    <p>{{ post.notice_details }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
             <div class="action-buttons">
                 {% if post.apply_link %}
                 <a href="{{ post.apply_link }}" target="_blank" class="btn btn-primary btn-large">
@@ -121,6 +247,286 @@
         </button>
     </div>
 </div>
+
+<style>
+    .post-detail {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .detail-header {
+        padding: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .post-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .post-category {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .post-category.job { background: #4CAF50; }
+    .post-category.internship { background: #FF9800; }
+    .post-category.exam { background: #F44336; }
+    .post-category.notice { background: #2196F3; }
+
+    .detail-header h1 {
+        margin: 0 0 15px 0;
+        font-size: 2.2rem;
+        line-height: 1.3;
+    }
+
+    .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        font-size: 0.95rem;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255,255,255,0.2);
+        padding: 5px 12px;
+        border-radius: 20px;
+        color: black;
+    }
+
+    .meta-item.deadline {
+        background: rgba(255,0,0,0.3);
+        font-weight: 600;
+
+
+    }
+
+    .meta-item.exam-highlight {
+        background: rgba(255,193,7,0.3);
+
+    }
+
+    .detail-content {
+        padding: 30px;
+
+    }
+
+    .detail-content h3 {
+        color: #333;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .detail-content h3 i {
+        color: #667eea;
+    }
+
+    .section-content {
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .skills-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .skill-tag {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .dates-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 10px;
+    }
+
+    .date-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+
+    .date-event {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .date-value {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .pattern-table {
+        overflow-x: auto;
+    }
+
+    .pattern-table table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .pattern-table th,
+    .pattern-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .pattern-table th {
+        background: #f5f5f5;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .pattern-table tr:hover {
+        background: #f9f9f9;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: #667eea;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #5a6fd8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    .btn-exam {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .btn-exam:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+    }
+
+    .btn-tertiary {
+        background: #f8f9fa;
+        color: #333;
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-tertiary:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .no-info {
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    /* Share button styles */
+    .share-btn {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .share-btn:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .detail-header {
+            padding: 20px;
+        }
+
+        .detail-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .post-meta {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
 
 <script>
     let currentShareData = {};
